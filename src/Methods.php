@@ -11,15 +11,41 @@ class Methods
      */
     public static function secret(): string
     {
-        return bin2hex(random_bytes(16));
+        return 'dd' . self::bin2hex(random_bytes(16));
     }
 
-    public static function binary2hex(string $binary): string
+    public static function bin2hex(string $binary): string
     {
-        $hex = '';
-        for ($i = 0; $i < strlen($binary); $i++) {
-            $hex .= sprintf('%02x', ord($binary[$i]));
-        }
-        return $hex;
+        return unpack("H*", $binary)[1];
     }
+
+    public static function hex2bin(string $hex): string
+    {
+        return pack("H*", $hex);
+    }
+
+    public static function ctr_encrypt(string $key, string $iv, string $data): string
+    {
+        return self::bin2hex(
+            openssl_encrypt(
+                $data,
+                "aes-256-ctr",
+                $key,
+                OPENSSL_RAW_DATA,
+                $iv
+            )
+        );
+    }
+
+    public static function ctr_decrypt(string $key, string $iv, string $data): string
+    {
+        return openssl_decrypt(
+            self::hex2bin($data),
+            "aes-256-ctr",
+            $key,
+            OPENSSL_RAW_DATA,
+            $iv
+        );
+    }
+
 }

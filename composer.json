@@ -18,6 +18,7 @@
         "react/event-loop": "^1.4",
         "react/promise": "^3 || ^2 || ^1",
         "clue/socks-react": "^1.4",
-        "vlucas/phpdotenv": "^5.5"
+        "vlucas/phpdotenv": "^5.5",
+      "ext-openssl": "*"
     }
 }
